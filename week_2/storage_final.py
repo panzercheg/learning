@@ -40,6 +40,5 @@ def main():
                 print('Get value: {value} from key: {key}'.format(value=my_dict.get(key1), key=key1))
 
 
-
 if __name__ == '__main__':
     main()
