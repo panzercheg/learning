@@ -41,10 +41,12 @@ def parse_args():
                 size_mb = round(size_mb, 2)
                 if not path_to_write:
                     without_write = comparison_size(int(threshold), size_mb, sign)
-                    if without_write is False:
+                    if without_write is True:
                         print('[Warning] Size file {file} is {size} MB and '
                               'file must be {sign} threshold {threshold} MB'.
                               format(file=path_to_file, size=size_mb, threshold=str(threshold), sign=sign))
+                    elif path_to_write is False:
+                        print('Size file {file} is ok {size} MB'.format(file=path_to_file, size=size_mb))
                     else:
                         print('Size file {file} is ok {size} MB'.format(file=path_to_file, size=size_mb))
                 if path_to_write:
@@ -60,6 +62,7 @@ def parse_args():
                         else:
                             print('Size file {file} is ok {size} MB'.format(file=path_to_file, size=size_mb))
                             data.write('\nSize file {file} is ok {size} MB'.format(file=path_to_file, size=size_mb))
+
 
 if __name__ == "__main__":
     parse_args()
