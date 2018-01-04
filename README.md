@@ -1,1 +1,1 @@
-# learning
+# learning and some stuff with Python
