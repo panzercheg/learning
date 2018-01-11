@@ -10,18 +10,18 @@ class CarBase:
 
     def get_photo_file_ext(self):
         filename, file_ext = os.path.splitext(self.photo_file_name)
-        return filename, file_ext
+        return file_ext
 
 
 class Car(CarBase):
     def __init__(self, brand, photo_file_name, carrying=None, passenger_seats_count=None):
-        super().photo_file_name
         pass
 
 
 class Truck(CarBase):
-    def __init__(self, brand, photo_file_name, carrying=None, body_whl=None):
+    def __init__(self, brand, photo_file_name, carrying, body_whl):
         super().photo_file_name
+        self.body_whl = body_whl.split("x")
         pass
 
 
@@ -40,6 +40,7 @@ def get_car_list(csv_filename):
     row_struct = [_ for _ in reader]
     ordered = OrderedDict()
     for row in row_struct:
+        print(row)
         # row = mapping.get(_.get('car_type'))(_)
 
 
@@ -54,7 +55,7 @@ def get_car_list(csv_filename):
 
 
 def main():
-    getter = CarBase("Lamborgini", "N:\Фотографии\\00041.MTS")
+    getter = CarBase("Lamborgini", "00041.MTS")
     print(getter.get_photo_file_ext())
     print(get_car_list("F:\python3\coursera_week3_cars.csv"))
 
