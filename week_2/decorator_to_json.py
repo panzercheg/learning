@@ -9,16 +9,17 @@ storage_path = os.path.join(tempfile.gettempdir(), 'storage.data')
 def to_json(func):
     @wraps(func)
     def to_json_wrapped(*args, **kwargs):
+        # result = '{}'.format(func(*args, **kwargs))
         result = func(*args, **kwargs)
-        if result is None:
+        result = json.dumps(result)
+        if result is None or result == "None":
             result = 'null'
             with open(storage_path, 'w') as json_file:
                 json_file.write(json.dumps(result))
             return result
         else:
             with open(storage_path, 'w') as json_file:
-                json.dumps(result)
-                json_file.write(json.dumps(json.dumps(result)))
+                json_file.write(json.dumps(result))
             return result
     return to_json_wrapped
 
@@ -28,7 +29,6 @@ def decorated(num_list):
     return num_list
 
 decorated("")
-
 
 # print(decorated([1,2,3,9,2]))
 # print(decorated([""]))
