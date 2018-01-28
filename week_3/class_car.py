@@ -1,6 +1,5 @@
 import csv
 import os
-from collections import OrderedDict
 
 
 class CarBase:
@@ -14,14 +13,18 @@ class CarBase:
 
 
 class Car(CarBase):
-    def __init__(self, brand, photo_file_name, carrying=None, passenger_seats_count=None):
+    def __init__(self, brand, photo_file_name, carrying, passenger_seats_count):
+        self.brand = brand
+        self.photo_file_name = photo_file_name
+        self.carrying = carrying
+        self.passenger_seats_count = passenger_seats_count
         pass
 
 
 class Truck(CarBase):
-    def __init__(self, brand, photo_file_name, carrying, body_whl):
-        super().photo_file_name
-        self.body_whl = body_whl.split("x")
+    def __init__(self, brand=None, photo_file_name=None, carrying=None, body_whl=None):
+        self.photo_file_name = photo_file_name
+        # self.body_whl = body_whl.split("x")
         pass
 
 
@@ -32,33 +35,26 @@ class SpecMachine(CarBase):
 
 
 def get_car_list(csv_filename):
-    mapping = {'car': Car,
+    mapping = {
                'truck': Truck,
                'specmachine': SpecMachine}
 
-    reader = csv.DictReader(open(csv_filename), delimiter=';')
-    row_struct = [_ for _ in reader]
-    ordered = OrderedDict()
-    for row in row_struct:
-        print(row)
-        # row = mapping.get(_.get('car_type'))(_)
+    inp = csv.DictReader(open(csv_filename), delimiter=';')
+    res = [_ for _ in inp]
 
-
-
-    # with open(csv_filename) as csv_fd:
-    #     reader = csv.reader(csv_fd, delimiter=';')
-    #     next(reader)
-    #     for row in reader:
-    #         print(row)
-        # car_list = []
-        # return car_list
+    for _ in res:
+        tt = mapping.get(_.get('car_type'), Truck)(_)
+        print(tt)
+    # reader = csv.DictReader(open(csv_filename), delimiter=';')
+    # row_struct = [_ for _ in reader]
+    # for row in row_struct:
+    #     print(row)
 
 
 def main():
     getter = CarBase("Lamborgini", "00041.MTS")
     print(getter.get_photo_file_ext())
     print(get_car_list("F:\python3\coursera_week3_cars.csv"))
-
 
 
 if __name__ == "__main__":
