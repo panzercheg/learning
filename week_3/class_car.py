@@ -23,7 +23,7 @@ class Car(CarBase):
 
 class Truck(CarBase):
     def __init__(self, brand=None, photo_file_name=None, carrying=None, body_whl=None):
-        self.photo_file_name = photo_file_name
+        super().
         # self.body_whl = body_whl.split("x")
         pass
 
