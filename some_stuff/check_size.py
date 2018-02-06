@@ -47,7 +47,13 @@ def parse_args():
     threshold = options.file_threshold
     sign = options.sign_check
 
-    one_file(file_ext, path_to_file)
+    check = os.path.isfile(path_to_file)
+    if check is True:
+        one_file(file_ext, path_to_file)
+    elif os.path.isdir(path_to_file):
+        pass
+    else:
+        print('[Warning] file {} doesn`t exists!'.format(path_to_file))
 
     for root, dirs, files in os.walk(path_to_file):
         for file in files:
