@@ -1,48 +1,49 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 import argparse
+import os
+import sys
+import ssl
 from scripts.jenkins.jenkins import Jenkins
+
+sys.path.append(os.getcwd())
+
+# suppress certificate check
+ssl._create_default_https_context = ssl._create_unverified_context
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-r', '--starforce', action='store_true', dest='starforce', help='Build crypted by starforce')
 parser.add_argument('-s', '--stream', action='store', dest='stream', help='stream')
 parser.add_argument('-u', '--upstream', action='store', dest='upstream', help='upstream build number')
+parser.add_argument('-c', '--china', action='store_true', dest='china', help='Upload build to CN slot')
 options = parser.parse_args()
 
 stream = options.stream
 upstream = options.upstream
 starforce = options.starforce
+china = options.china
+
+if starforce and not china:
+    build_type = stream + '_sf'
+elif china:
+    build_type = stream + '_cn'
+else:
+    build_type = stream
 
 build_templates = {
-    'dev4': 't1_game_center_dev4_publish',
-    'dev3': 't1_game_center_dev3_publish',
-    'dev2': 't1_game_center_dev2_publish',
-    'demo1': 't1_game_center_demo1_publish',
-    'dev1': 't1_game_center_dev1_publish',
-    'dev5': 't1_game_center_dev5_publish'
+    'master_sf': 'dev5',
+    'master': 'dev4',
+    '0.25': 'dev3',
+    '0.25_sf': 'dev1',
+    '0.24_sf': 'demo1',
+    '0.24': 'dev2',
+    '0.25_cn': 'cn_test',
+    '0.24_cn': 'cn_test'
 }
 
-if stream == "master" and starforce:
-    print(build_templates.get("dev5"))
-    build_for_gamecenter = build_templates.get("dev5")
-
-if stream == "master" and not starforce:
-    print(build_templates.get("dev4"))
-    build_for_gamecenter = build_templates.get("dev4")
-
-if stream == "0.25" and starforce:
-    print(build_templates.get("dev1"))
-    build_for_gamecenter = build_templates.get("dev1")
-
-if stream == "0.25" and not starforce:
-    print(build_templates.get("dev3"))
-    build_for_gamecenter = build_templates.get("dev3")
-
-if stream == "0.24" and starforce:
-    print(build_templates.get("demo1"))
-    build_for_gamecenter = build_templates.get("demo1")
-
-if stream == "0.24" and not starforce:
-    print(build_templates.get("dev2"))
-    build_for_gamecenter = build_templates.get("dev2")
+build_for_gamecenter = 't1_game_center_{}_publish'.format(build_templates.get(build_type))
+print(build_for_gamecenter)
 
 
 def gamecenter_upload():
