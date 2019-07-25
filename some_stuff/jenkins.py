@@ -10,7 +10,7 @@ from base64 import b64encode
 
 
 sys.path.append(os.getcwd())
-from scripts.agent_config.agent_config import AgentConfig
+from some_stuff.agent_config import AgentConfig
 
 
 class Jenkins:
